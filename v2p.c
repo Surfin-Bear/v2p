@@ -61,10 +61,10 @@ uint64_t virt_to_phys(int fd, uint64_t virtaddr)
 
     uint64_t tbl_present;
     uint64_t tbl_swapped;
-    uint64_t tbl_shared;
-    uint64_t tbl_pte_dirty;
+    //uint64_t tbl_shared;
+    //uint64_t tbl_pte_dirty;
     uint64_t tbl_swap_offset;
-    uint64_t tbl_swap_type;
+    //uint64_t tbl_swap_type;
 
     //1PAGE = typically 4KB, 1entry = 8bytes
     pagesize = (int)sysconf(_SC_PAGESIZE);
@@ -96,13 +96,13 @@ uint64_t virt_to_phys(int fd, uint64_t virtaddr)
 
     tbl_present   = (tblen >> 63) & 0x1;
     tbl_swapped   = (tblen >> 62) & 0x1;
-    tbl_shared    = (tblen >> 61) & 0x1;
-    tbl_pte_dirty = (tblen >> 55) & 0x1;
+    //tbl_shared    = (tblen >> 61) & 0x1;
+    //tbl_pte_dirty = (tblen >> 55) & 0x1;
     if (!tbl_swapped) {
         tbl_swap_offset = (tblen >> 0) & 0x7fffffffffffffULL;
     } else {
         tbl_swap_offset = (tblen >> 5) & 0x3ffffffffffffULL;
-        tbl_swap_type = (tblen >> 0) & 0x1f;
+        //tbl_swap_type = (tblen >> 0) & 0x1f;
     }
 
     pageaddr = tbl_swap_offset * pagesize;
@@ -119,7 +119,8 @@ int main(int argc, char *argv[])
 {
     //malloc reserves memory in the heap, could use stack???
     char* buffer = (char *)malloc(GB);
-    int fd = -1, pagesize;
+    int fd = -1;
+    //int pagesize;
     //uint64_t virtaddr, areasize, Basephysaddr, physaddr, v;
     int result = -1;
 
@@ -130,7 +131,7 @@ int main(int argc, char *argv[])
     }
 
     for (size_t i = 0; i < GB; i += ROW_SIZE) {
-        uint64_t address = virt_to_phys(fd, &buffer[i]);
+        uint64_t address = virt_to_phys(fd, (uint64_t)&buffer[i]);
         uint64_t row = (address >> 15) & ROW_MASK;
         uint64_t bank = (address >> 12) & BANK_MASK;
         uint64_t column = (address >> 3) & COL_MASK;
