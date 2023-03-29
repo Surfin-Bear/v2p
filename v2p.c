@@ -134,15 +134,15 @@ int main(int argc, char *argv[])
         printf("Trying Address 0x%lx\n", (uint64_t)&buffer[i]);
         uint64_t address = virt_to_phys(fd, (uint64_t)&buffer[i]);
         if (address == -1) {
-            printf(" Base virt:0x%08lux, (%s)\n",
+            printf(" Base virt:0x%08lx, (%s)\n",
                    (uint64_t)&buffer, "not valid virtual address\n");
             break;
         } else if (address == -2) {
-            printf(" Base virt:0x%08llx, phys:(%s)\n",
+            printf(" Base virt:0x%08lx, phys:(%s)\n",
                    (uint64_t)&buffer, "not present");
         } else {
-            printf(" Base virt:0x%08llx, phys:0x%08llx\n",
-                   (uint64_t)&buffer, (long long)address);
+            printf(" Base virt:0x%08lx, phys:0x%08lx\n",
+                   (uint64_t)&buffer, (long)address);
         }
         uint64_t row = (address >> 15) & ROW_MASK;
         uint64_t bank = (address >> 12) & BANK_MASK;
