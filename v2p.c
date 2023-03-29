@@ -137,6 +137,12 @@ int main(int argc, char *argv[])
             printf(" Base virt:0x%08lux, (%s)\n",
                    (uint64_t)&buffer, "not valid virtual address\n");
             break;
+        } else if (address == -2) {
+            printf(" Base virt:0x%08llx, phys:(%s)\n",
+                   (uint64_t)&buffer, "not present");
+        } else {
+            printf(" Base virt:0x%08llx, phys:0x%08llx\n",
+                   (uint64_t)&buffer, (long long)address);
         }
         uint64_t row = (address >> 15) & ROW_MASK;
         uint64_t bank = (address >> 12) & BANK_MASK;
