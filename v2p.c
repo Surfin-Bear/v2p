@@ -132,6 +132,11 @@ int main(int argc, char *argv[])
 
     for (size_t i = 0; i < GB; i += ROW_SIZE) {
         uint64_t address = virt_to_phys(fd, (uint64_t)&buffer[i]);
+        if (address == -1) {
+            printf(" Base virt:0x%08lux, (%s)\n",
+                   (uint64_t)&buffer, "not valid virtual address\n");
+            break;
+        }
         uint64_t row = (address >> 15) & ROW_MASK;
         uint64_t bank = (address >> 12) & BANK_MASK;
         uint64_t column = (address >> 3) & COL_MASK;
