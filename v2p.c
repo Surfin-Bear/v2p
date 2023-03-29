@@ -131,6 +131,7 @@ int main(int argc, char *argv[])
     }
 
     for (size_t i = 0; i < GB; i += ROW_SIZE) {
+        printf("Trying Address 0x%lx\n", &buffer[i]);
         uint64_t address = virt_to_phys(fd, (uint64_t)&buffer[i]);
         if (address == -1) {
             printf(" Base virt:0x%08lux, (%s)\n",
